@@ -32,7 +32,7 @@ public class GameController {
     public Game createGame(CreateGameRequest request) {
         LOGGER.info("POST createGame called.");
         // TODO step 1 - Validate request
-        // TODO Create exceptions to return
+        // TODO Create exceptions to throw - return error value
         return this.gameService.createGame(request);
     }
 }

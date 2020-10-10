@@ -13,17 +13,17 @@ Main domain entities:
 POST /minesweeper/user/
 
 Request:
-```
+```json
 {
-   "name": "user_name"
+    "name": "user_name"
 }
 ```
 
 Response:
-``` 
+```json
 {
-   "id": 1234,
-   "name": "user_name"
+    "id": 1234,
+    "name": "user_name"
 }
 ```
 
@@ -33,13 +33,13 @@ Response:
 POST /minesweeper/user/
 
 Request
-```
+```json
 {
-"user_id":1234,
-"height": 10,
-"width": 10,
-"mine_quantity": 20
-}     
+    "user_id": 1234,
+    "height": 10,
+    "width": 10,
+    "mine_quantity": 20
+}    
 ```
 Response:
 ```
@@ -48,10 +48,10 @@ Response:
 #### Game interaction
 ##### HIT
 /minesweeper/game/{id_game}/hit
-```
+```json
 {
-   "x": 5,
-   "y": 6
+    "x": 5,
+    "y": 6
 }
 ```
 
@@ -61,10 +61,10 @@ Response:
 ```
 ##### FLAG
 /minesweeper/game/{id_game}/flag
-```
+```json
 {
-   "x": 5,
-   "y": 6
+    "x": 5,
+    "y": 6
 }
 ```
 

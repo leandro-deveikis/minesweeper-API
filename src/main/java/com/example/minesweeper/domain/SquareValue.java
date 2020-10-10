@@ -11,9 +11,5 @@ public enum SquareValue {
     /**
      * This is adjacent to one or more mines
      */
-    NUMBER,
-    /**
-     * There is nothing here
-     */
-    EMPTY
+    NUMBER
 }

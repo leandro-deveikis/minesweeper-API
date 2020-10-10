@@ -6,6 +6,13 @@ public class CreateGameRequest {
     private Integer width;
     private Integer mineQuantity;
 
+    public CreateGameRequest(Integer userId, Integer height, Integer width, Integer mineQuantity) {
+        this.userId = userId;
+        this.height = height;
+        this.width = width;
+        this.mineQuantity = mineQuantity;
+    }
+
     public Integer getUserId() {
         return userId;
     }
