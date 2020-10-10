@@ -4,13 +4,8 @@ package com.example.minesweeper.domain;
  * Player at the game
  */
 public class Player {
+    private Integer id;
     private String name;
-    private String id;
-
-    public Player(String name, String id) {
-        this.name = name;
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -20,11 +15,11 @@ public class Player {
         this.name = name;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 }

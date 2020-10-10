@@ -2,15 +2,15 @@
 This is the solution presented for the [Minesweeper challenge](challenge.md)
 
 Main domain entities:
-- User: Representation of a User and its information.
+- Player: Representation of a User and its information.
 - Game: A game and its status played by a user.
 - Square: A portion of a game. 
 
 ## API Definition
-### User
+### Player
 
-#### User creation
-POST /minesweeper/user/
+#### Player creation
+POST /minesweeper/player/
 
 Request:
 ```json
@@ -30,12 +30,12 @@ Response:
 ### Game
 
 #### Game creation
-POST /minesweeper/user/
+POST /minesweeper/game/
 
 Request
 ```json
 {
-    "user_id": 1234,
+    "player_id": 1234,
     "height": 10,
     "width": 10,
     "mine_quantity": 20

@@ -13,17 +13,12 @@ public class Game {
     private GameState state;
     private GameResult result;
 
-    // TODO: This may not be necessary
     public Game() {
 
     }
 
-    public Game(Integer id, Player player, Square[][] grid) {
+    public void setId(Integer id) {
         this.id = id;
-        this.player = player;
-        this.grid = grid;
-        this.state = GameState.PLAYING;
-        this.startTime = LocalDateTime.now();
     }
 
     public Integer getId() {
@@ -56,5 +51,17 @@ public class Game {
 
     public void setResult(GameResult result) {
         this.result = result;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public void setGrid(Square[][] grid) {
+        this.grid = grid;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
     }
 }

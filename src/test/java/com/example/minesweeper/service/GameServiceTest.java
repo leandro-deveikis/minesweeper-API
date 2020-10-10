@@ -2,6 +2,8 @@ package com.example.minesweeper.service;
 
 import com.example.minesweeper.controller.request.CreateGameRequest;
 import com.example.minesweeper.domain.Square;
+import com.example.minesweeper.service.persistence.GameInMemoryPersistenceService;
+import com.example.minesweeper.service.persistence.PlayerInMemoryPersistenceService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,11 +23,15 @@ class GameServiceTest {
 
     @Mock
     private GridService gridService;
+    @Mock
+    private GameInMemoryPersistenceService gamePersistenceService;
+    @Mock
+    private PlayerInMemoryPersistenceService playerPersistenceService;
     private Square[][] squareMock = new Square[3][3];
 
     @BeforeEach
     public void beforeEach() {
-        this.gameService = new GameService(this.gridService);
+        this.gameService = new GameService(this.gridService, this.gamePersistenceService, this.playerPersistenceService);
 
         when(gridService.generateGrid(any(), any(), any())).thenReturn(squareMock);
     }

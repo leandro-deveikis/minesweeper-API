@@ -1,24 +1,24 @@
 package com.example.minesweeper.controller.request;
 
 public class CreateGameRequest {
-    private Integer userId;
+    private Integer playerId;
     private Integer height;
     private Integer width;
     private Integer mineQuantity;
 
-    public CreateGameRequest(Integer userId, Integer height, Integer width, Integer mineQuantity) {
-        this.userId = userId;
+    public CreateGameRequest(Integer playerId, Integer height, Integer width, Integer mineQuantity) {
+        this.playerId = playerId;
         this.height = height;
         this.width = width;
         this.mineQuantity = mineQuantity;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public Integer getPlayerId() {
+        return playerId;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setPlayerId(Integer playerId) {
+        this.playerId = playerId;
     }
 
     public Integer getHeight() {
