@@ -1,4 +1,4 @@
-# minesweeper-API - Solution by Leandro Deveikis
+# Minesweeper-API Challenge - Solution by Leandro Deveikis
 This is the solution presented for the [Minesweeper challenge](challenge.md)
 
 Main domain entities:
@@ -7,9 +7,9 @@ Main domain entities:
 - Square: A portion of a game. 
 
 ## API Definition
-###User
+### User
 
-####User creation
+#### User creation
 POST /minesweeper/user/
 
 Request:
@@ -27,9 +27,9 @@ Response:
 }
 ```
 
-###Game
+### Game
 
-####Game creation
+#### Game creation
 POST /minesweeper/user/
 
 Request
@@ -45,8 +45,8 @@ Response:
 ```
 //Complete with response of game state
 ```
-####Game interaction
-#####HIT
+#### Game interaction
+##### HIT
 /minesweeper/game/{id_game}/hit
 ```
 {
@@ -59,7 +59,7 @@ Response:
 ```
 //Complete with response of game state
 ```
-#####FLAG
+##### FLAG
 /minesweeper/game/{id_game}/flag
 ```
 {

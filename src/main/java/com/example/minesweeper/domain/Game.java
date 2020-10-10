@@ -13,6 +13,11 @@ public class Game {
     private GameState state;
     private GameResult result;
 
+    // TODO: This may not be necessary
+    public Game() {
+
+    }
+
     public Game(Integer id, Player player, Square[][] grid) {
         this.id = id;
         this.player = player;
