@@ -20,6 +20,6 @@ public class MinesweeperController {
     @RequestMapping("/version")
     @ResponseBody
     public String version() {
-        return "version: " + projectVersion;
+        return "Version: " + projectVersion + "\nAuthor: Leandro Deveikis <leandro.deveikis@gmail.com>";
     }
 }
