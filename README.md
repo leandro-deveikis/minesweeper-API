@@ -7,6 +7,11 @@ Main domain entities:
 - Square: A portion of a game. 
 
 ## API Definition
+### INFO
+```shell script
+    curl --request GET 'http://localhost:8080/minesweeper' 
+```
+
 ### Player
 
 #### Player creation
