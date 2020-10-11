@@ -6,10 +6,13 @@ Main domain entities:
 - Game: A game and its status played by a user.
 - Square: A portion of a game. 
 
+Deployed at Heroku: 
+[http://minesweeper-api-ld.herokuapp.com/](http://minesweeper-api-ld.herokuapp.com/)
+
 ## API Definition
 ### INFO
 ```shell script
-    curl --request GET 'http://localhost:8080/minesweeper' 
+    curl --request GET 'http://minesweeper-api-ld.herokuapp.com/' 
 ```
 
 ### Player
