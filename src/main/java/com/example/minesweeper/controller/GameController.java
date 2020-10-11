@@ -39,15 +39,14 @@ public class GameController {
     @PostMapping("/{gameId}/click")
     @ResponseBody
     public Game clickSquare(@PathVariable Integer gameId, @RequestBody GameActionRequest actionRequest) {
-        // TODO Validate request
-        // TODO Create exceptions to throw - return error value
+        this.requestValidator.validateGameActionRequest(gameId, actionRequest);
         return this.gameService.clickSquare(gameId, actionRequest.getX(), actionRequest.getY());
     }
 
     @PostMapping("/{gameId}/flag")
     @ResponseBody
     public Game flagSquare(@PathVariable Integer gameId, @RequestBody GameActionRequest actionRequest) {
-        this.requestValidator.validateFlagSquare(gameId, actionRequest);
+        this.requestValidator.validateGameActionRequest(gameId, actionRequest);
         return this.gameService.flagSquare(gameId, actionRequest.getX(), actionRequest.getY());
     }
 }

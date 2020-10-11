@@ -13,9 +13,14 @@ public class Game {
     private GameState state;
     private GameResult result;
 
-    public Game() {
-
+    public Integer getGameHeight() {
+        return this.getGrid().length;
     }
+
+    public Integer getGameWidth() {
+        return this.getGrid()[0].length;
+    }
+
 
     public void setId(Integer id) {
         this.id = id;
@@ -64,4 +69,5 @@ public class Game {
     public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
+
 }
