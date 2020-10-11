@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -15,11 +14,11 @@ public class InfoController {
 
     @RequestMapping
     public Map home() {
-        Map<String, String> info = new HashMap<>();
-        info.put("project_name", "Minesweeper-API");
-        info.put("version", this.projectVersion);
-        info.put("author", "Leandro Deveikis <leandro.deveikis@gmail.com>");
-        info.put("repo", "https://github.com/leandro-deveikis/minesweeper-API");
-        return info;
+        return Map.of(
+                "project_name", "Minesweeper-API",
+                "version", this.projectVersion,
+                "author", "Leandro Deveikis <leandro.deveikis@gmail.com>",
+                "repo", "https://github.com/leandro-deveikis/minesweeper-API"
+        );
     }
 }

@@ -1,6 +1,7 @@
 package com.example.minesweeper.controller;
 
 import com.example.minesweeper.controller.request.CreateGameRequest;
+import com.example.minesweeper.controller.request.GameActionRequest;
 import com.example.minesweeper.domain.Game;
 import com.example.minesweeper.service.GameService;
 import org.apache.commons.logging.Log;
@@ -19,17 +20,33 @@ public class GameController {
         this.gameService = gameService;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{gameId}")
     @ResponseBody
-    public Game getGame(@PathVariable() Integer id) {
-        return gameService.getGameById(id);
+    public Game getGame(@PathVariable Integer gameId) {
+        return gameService.getGameById(gameId);
     }
 
     @PostMapping
     @ResponseBody
-    public Game createGame(CreateGameRequest request) {
-        // TODO step 1 - Validate request
+    public Game createGame(@RequestBody CreateGameRequest request) {
+        // TODO Validate request
         // TODO Create exceptions to throw - return error value
         return this.gameService.createGame(request);
+    }
+
+    @PostMapping("/{gameId}/click")
+    @ResponseBody
+    public Game clickSquare(@PathVariable Integer gameId, @RequestBody GameActionRequest actionRequest) {
+        // TODO Validate request
+        // TODO Create exceptions to throw - return error value
+        return this.gameService.clickSquare(gameId, actionRequest);
+    }
+
+    @PostMapping("/{gameId}/flag")
+    @ResponseBody
+    public Game flagSquare(@PathVariable Integer gameId, @RequestBody GameActionRequest actionRequest) {
+        // TODO Validate request
+        // TODO Create exceptions to throw - return error value
+        return this.gameService.flagSquare(gameId, actionRequest);
     }
 }

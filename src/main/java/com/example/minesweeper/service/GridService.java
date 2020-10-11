@@ -19,7 +19,15 @@ public class GridService {
      */
     public Square[][] generateGrid(Integer height, Integer width, Integer mineQuantity) {
         // create the grid
-        var grid = new Square[height][width];
+        Square[][] grid = new Square[height][width];
+        this.completeMines(height, width, mineQuantity, grid);
+        this.completeOtherSquares(height, width, grid);
+        // finished
+        LogHelper.logGrid(grid);
+        return grid;
+    }
+
+    private void completeMines(Integer height, Integer width, Integer mineQuantity, Square[][] grid) {
         // randomly complete the mines
         Random random = new Random();
         for (int i = 0; i < mineQuantity; i++) {
@@ -32,6 +40,9 @@ public class GridService {
             // the square is empty, so we complete with a mine
             grid[y][x] = new Square(SquareState.UNCOVERED, SquareValue.MINE);
         }
+    }
+
+    private void completeOtherSquares(Integer height, Integer width, Square[][] grid) {
         //complete the rest of the squares
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
@@ -41,9 +52,6 @@ public class GridService {
                 }
             }
         }
-        // finished
-        LogHelper.logGrid(grid);
-        return grid;
     }
 
     /**
@@ -52,7 +60,7 @@ public class GridService {
      */
     public int calculateNumberForSquare(Square[][] grid, Integer height, Integer width, int i, int j) {
         int mineCount = 0;
-        //upper line
+        // upper line
         int upperLine = i - 1;
         if (upperLine >= 0) {
             if ((j - 1 >= 0) && this.containsMine(grid[upperLine][j - 1])) mineCount++;

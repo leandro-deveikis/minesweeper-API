@@ -3,15 +3,13 @@ package com.example.minesweeper.controller;
 import com.example.minesweeper.controller.request.CreatePlayerRequest;
 import com.example.minesweeper.domain.Player;
 import com.example.minesweeper.service.PlayerService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/player")
 public class PlayerController {
-    private static final Log LOGGER = LogFactory.getLog(PlayerController.class);
+    // private static final Log LOGGER = LogFactory.getLog(PlayerController.class);
 
     private PlayerService playerService;
 

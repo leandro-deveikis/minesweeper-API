@@ -1,6 +1,7 @@
 package com.example.minesweeper.service;
 
 import com.example.minesweeper.controller.request.CreateGameRequest;
+import com.example.minesweeper.controller.request.GameActionRequest;
 import com.example.minesweeper.domain.Game;
 import com.example.minesweeper.domain.GameState;
 import com.example.minesweeper.service.persistence.GameInMemoryPersistenceService;
@@ -44,5 +45,17 @@ public class GameService {
 
     public Game getGameById(Integer id) {
         return this.gamePersistenceService.getGameById(id);
+    }
+
+    public Game clickSquare(Integer gameId, GameActionRequest actionRequest) {
+        Game game = this.getGameById(gameId);
+        // TODO complete actions
+        return game;
+    }
+
+    public Game flagSquare(Integer gameId, GameActionRequest actionRequest) {
+        Game game = this.getGameById(gameId);
+        // TODO complete actions
+        return game;
     }
 }
