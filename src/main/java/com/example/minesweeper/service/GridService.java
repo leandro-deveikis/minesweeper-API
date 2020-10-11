@@ -38,7 +38,7 @@ public class GridService {
                 x = random.nextInt(width);
             } while (grid[y][x] != null);
             // the square is empty, so we complete with a mine
-            grid[y][x] = new Square(SquareState.UNCOVERED, SquareValue.MINE);
+            grid[y][x] = new Square(SquareState.COVERED, SquareValue.MINE);
         }
     }
 
@@ -48,7 +48,7 @@ public class GridService {
             for (int j = 0; j < width; j++) {
                 if (grid[i][j] == null) {
                     var number = this.calculateNumberForSquare(grid, height, width, i, j);
-                    grid[i][j] = new Square(SquareState.UNCOVERED, SquareValue.NUMBER, number);
+                    grid[i][j] = new Square(SquareState.COVERED, SquareValue.NUMBER, number);
                 }
             }
         }

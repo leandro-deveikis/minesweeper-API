@@ -1,6 +1,7 @@
 package com.example.minesweeper.service;
 
 import com.example.minesweeper.domain.Square;
+import com.example.minesweeper.domain.SquareState;
 import com.example.minesweeper.domain.SquareValue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -59,6 +60,12 @@ class GridServiceTest {
         assertEquals(height, grid.length);
         assertEquals(width, grid[0].length);
         assertEquals(mines, this.getMineCount(height, width, grid));
+        // all should be covered when first created
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                assertEquals(SquareState.COVERED, grid[i][j].getState());
+            }
+        }
     }
 
     private int getMineCount(Integer height, Integer width, Square[][] grid) {
