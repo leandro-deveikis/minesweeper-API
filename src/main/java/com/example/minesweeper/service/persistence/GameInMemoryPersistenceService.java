@@ -1,6 +1,8 @@
 package com.example.minesweeper.service.persistence;
 
 import com.example.minesweeper.domain.Game;
+import com.example.minesweeper.exception.MinesweeperException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -25,7 +27,10 @@ public class GameInMemoryPersistenceService {
     }
 
     public Game getGameById(Integer id) {
-        return this.storage.get(id);
+        Game game = this.storage.get(id);
+        if (game == null)
+            throw new MinesweeperException("Game not found: " + id, HttpStatus.NOT_FOUND);
+        return game;
     }
 
     private Integer generateRandomId() {
@@ -37,5 +42,4 @@ public class GameInMemoryPersistenceService {
         // TODO This line above is DANGEOUS, can enter in an infinite loop. Should be fixed
         return id;
     }
-
 }

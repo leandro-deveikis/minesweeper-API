@@ -1,6 +1,8 @@
 package com.example.minesweeper.service.persistence;
 
 import com.example.minesweeper.domain.Player;
+import com.example.minesweeper.exception.MinesweeperException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -22,7 +24,10 @@ public class PlayerInMemoryPersistenceService {
     }
 
     public Player getPlayerById(Integer id) {
-        return this.storage.get(id);
+        Player player = this.storage.get(id);
+        if (player == null)
+            throw new MinesweeperException("Player not found: " + id, HttpStatus.NOT_FOUND);
+        return player;
     }
 
     private Integer generateRandomId() {
