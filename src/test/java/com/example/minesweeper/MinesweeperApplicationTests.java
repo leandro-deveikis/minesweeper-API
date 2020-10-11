@@ -53,7 +53,7 @@ class MinesweeperApplicationTests {
         createPlayerRequest.setName(test_name_player);
         var player = this.playerController.createPlayer(createPlayerRequest);
 
-        // Test
+        // Test - create game
         var request = new CreateGameRequest(player.getId(), 10, 15, 60);
         var game = this.gameController.createGame(request);
 
@@ -63,5 +63,11 @@ class MinesweeperApplicationTests {
         assertNotNull(game.getPlayer());
         assertNotNull(game.getStartTime());
         assertNotNull(game.getState());
+
+        // Test - get by id
+
+        var outputGetGame = this.gameController.getGame(game.getId());
+        assertNotNull(outputGetGame);
+        assertNotNull(outputGetGame.getId());
     }
 }

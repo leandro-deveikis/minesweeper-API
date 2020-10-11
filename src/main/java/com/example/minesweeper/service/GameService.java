@@ -41,4 +41,8 @@ public class GameService {
         this.gamePersistenceService.saveGame(game);
         return game;
     }
+
+    public Game getGameById(Integer id) {
+        return this.gamePersistenceService.getGameById(id);
+    }
 }

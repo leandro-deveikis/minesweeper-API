@@ -21,16 +21,13 @@ public class GameController {
 
     @GetMapping("/{id}")
     @ResponseBody
-    public Game getGame(@PathVariable() String id) {
-        LOGGER.info("GET getGame by id called: " + id);
-        // TODO complete this service
-        return null;
+    public Game getGame(@PathVariable() Integer id) {
+        return gameService.getGameById(id);
     }
 
     @PostMapping
     @ResponseBody
     public Game createGame(CreateGameRequest request) {
-        LOGGER.info("POST createGame called.");
         // TODO step 1 - Validate request
         // TODO Create exceptions to throw - return error value
         return this.gameService.createGame(request);
