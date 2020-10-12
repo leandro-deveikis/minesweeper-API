@@ -6,6 +6,9 @@ import com.example.minesweeper.domain.SquareValue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.stream.Stream;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -55,26 +58,23 @@ class GridServiceTest {
         validateGrid(grid, height, width, mines);
     }
 
-    private void validateGrid(Square[][] grid, Integer height, Integer width, Integer mines) {
+    private void validateGrid(Square[][] grid, Integer height, Integer width, int mines) {
         assertNotNull(grid);
         assertEquals(height, grid.length);
         assertEquals(width, grid[0].length);
         assertEquals(mines, this.getMineCount(height, width, grid));
         // all should be covered when first created
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                assertEquals(SquareState.COVERED, grid[i][j].getState());
-            }
-        }
+        Arrays.stream(grid)
+                .flatMap(squares -> Stream.of(squares))
+                .forEach(square ->
+                        assertEquals(SquareState.COVERED, square.getState())
+                );
     }
 
-    private int getMineCount(Integer height, Integer width, Square[][] grid) {
-        int mineCount = 0;
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                if (SquareValue.MINE.equals(grid[i][j].getValue())) mineCount++;
-            }
-        }
-        return mineCount;
+    private long getMineCount(Integer height, Integer width, Square[][] grid) {
+        return Arrays.stream(grid)
+                .flatMap(squares -> Stream.of(squares))
+                .filter(square -> SquareValue.MINE.equals(square.getValue()))
+                .count();
     }
 }

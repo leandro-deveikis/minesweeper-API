@@ -42,9 +42,9 @@ public class GameRequestValidator {
             throw new MinesweeperException("Y param is required", HttpStatus.BAD_REQUEST);
 
         var game = gamePersistenceService.getGameById(gameId);
-        if (y < 0 || y > game.getGameHeight() - 1)
+        if (y < 0 || y > game.getHeight() - 1)
             throw new MinesweeperException("Y param is invalid", HttpStatus.BAD_REQUEST);
-        if (x < 0 || x > game.getGameWidth() - 1)
+        if (x < 0 || x > game.getWidth() - 1)
             throw new MinesweeperException("X param is invalid", HttpStatus.BAD_REQUEST);
     }
 }

@@ -1,23 +1,28 @@
 package com.example.minesweeper.service;
 
-import com.example.minesweeper.domain.Game;
-import com.example.minesweeper.domain.GameState;
-import com.example.minesweeper.domain.SquareState;
+import com.example.minesweeper.domain.*;
 import com.example.minesweeper.exception.MinesweeperException;
 import com.example.minesweeper.helper.LogHelper;
+import com.example.minesweeper.helper.SquareHelper;
 import com.example.minesweeper.service.persistence.GameInMemoryPersistenceService;
 import com.example.minesweeper.service.persistence.PlayerInMemoryPersistenceService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.stream.Stream;
 
 /**
  * Main Game services
  */
 @Component
 public class GameService {
+    private static final Log LOGGER = LogFactory.getLog(GameService.class);
+
     private GridService gridService;
     private GameInMemoryPersistenceService gamePersistenceService;
     private PlayerInMemoryPersistenceService playerPersistenceService;
@@ -40,8 +45,9 @@ public class GameService {
         game.setGrid(this.gridService.generateGrid(height, width, mineQuantity));
         game.setState(GameState.PLAYING);
         game.setStartTime(LocalDateTime.now());
-        this.gamePersistenceService.saveGame(game);
-        return game;
+        game.setHeight(height);
+        game.setWidth(width);
+        return this.gamePersistenceService.saveGame(game);
     }
 
     public Game getGameById(Integer id) {
@@ -49,22 +55,67 @@ public class GameService {
     }
 
     public Game clickSquare(Integer gameId, int x, int y) {
-        Game game = this.getGameById(gameId);
-        // TODO complete actions
+        var game = this.getGameById(gameId);
+        this.validateGameCanAction(game);
+        var square = game.getGrid()[y][x];
+
+        // check if flagged   -> throw exception
+        if (SquareState.FLAGGED.equals(square.getState()))
+            throw new MinesweeperException("Invalid operation - Clicking flagged square", HttpStatus.BAD_REQUEST);
+
+        // check if uncovered -> throw exception
+        if (SquareState.UNCOVERED.equals(square.getState()))
+            throw new MinesweeperException("Invalid operation - Clicking already uncovered square", HttpStatus.BAD_REQUEST);
+
+        // check if mine      -> end game loose
+        if (SquareValue.MINE.equals(square.getValue())) {
+            square.setState(SquareState.UNCOVERED);
+            this.finishGame(game, GameResult.LOST);
+        } else {
+            // -- if number = 0   -> uncover other squares
+            SquareHelper.uncoverSquare(x, y, game);
+
+            // check if game is finished (all of the remaining uncover squares are mines)
+            // -- if finished     -> game won
+            if (this.checkGameFinished(game)) {
+                this.finishGame(game, GameResult.WON);
+            }
+        }
+
+        game = this.gamePersistenceService.saveGame(game);
+        LogHelper.logGrid(game.getGrid());
         return game;
+    }
+
+    private void finishGame(Game game, GameResult lost) {
+        game.setResult(lost);
+        game.setState(GameState.FINISHED);
+        game.setFinishTime(LocalDateTime.now());
+    }
+
+    private boolean checkGameFinished(Game game) {
+        var grid = game.getGrid();
+        var finished = Arrays.stream(grid)
+                .flatMap(squares -> Stream.of(squares))
+                .allMatch(square ->
+                        SquareState.UNCOVERED.equals(square.getState()) ||
+                                SquareValue.MINE.equals(square.getValue()));
+
+        LOGGER.info("Game " + game.getId() + " finished: " + finished);
+        return finished;
     }
 
     public Game flagSquare(Integer gameId, int x, int y) {
         // verify can be flagged
-        Game game = this.getGameById(gameId);
-        if (GameState.FINISHED.equals(game.getState()))
-            throw new MinesweeperException("Finished game can not be modified.", HttpStatus.BAD_REQUEST);
+        var game = this.getGameById(gameId);
+        this.validateGameCanAction(game);
 
         var square = game.getGrid()[y][x];
         if (SquareState.UNCOVERED.equals(square.getState()))
             throw new MinesweeperException("Uncovered square can not be flagged.", HttpStatus.BAD_REQUEST);
-            // change status
-        else if (SquareState.COVERED.equals(square.getState()))
+
+        // reverse status
+        if (SquareState.COVERED.equals(square.getState()))
             square.setState(SquareState.FLAGGED);
         else if (SquareState.FLAGGED.equals(square.getState()))
             square.setState(SquareState.COVERED);
@@ -75,5 +126,8 @@ public class GameService {
         return game;
     }
 
-
+    private void validateGameCanAction(Game game) {
+        if (GameState.FINISHED.equals(game.getState()))
+            throw new MinesweeperException("Finished game can not be modified.", HttpStatus.BAD_REQUEST);
+    }
 }

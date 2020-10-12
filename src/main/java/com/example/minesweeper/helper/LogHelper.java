@@ -4,7 +4,7 @@ import com.example.minesweeper.domain.Square;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class LogHelper {
+public abstract class LogHelper {
     private static final Log LOGGER = LogFactory.getLog(LogHelper.class);
 
     /**
@@ -23,14 +23,27 @@ public class LogHelper {
     }
 
     private static String getIcon(Square square) {
-        var value = square.getValue();
-        switch (value) {
+        var sb = new StringBuilder();
+        switch (square.getState()) {
+            case COVERED:
+                sb.append("C");
+                break;
+            case FLAGGED:
+                sb.append("F");
+                break;
+            case UNCOVERED:
+                sb.append("U");
+                break;
+        }
+        switch (square.getValue()) {
             case MINE:
-                return "M";
+                sb.append("(M)");
+                break;
             case NUMBER:
-                return square.getNumber().toString();
+                sb.append("(" + square.getNumber().toString() + ")");
+                break;
         }
         // should never reach here
-        return "";
+        return sb.toString();
     }
 }

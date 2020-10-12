@@ -10,17 +10,11 @@ public class Game {
     private Player player;
     private Square[][] grid;
     private LocalDateTime startTime;
+    private LocalDateTime finishTime;
     private GameState state;
     private GameResult result;
-
-    public Integer getGameHeight() {
-        return this.getGrid().length;
-    }
-
-    public Integer getGameWidth() {
-        return this.getGrid()[0].length;
-    }
-
+    private Integer height;
+    private Integer width;
 
     public void setId(Integer id) {
         this.id = id;
@@ -70,4 +64,27 @@ public class Game {
         this.startTime = startTime;
     }
 
+    public LocalDateTime getFinishTime() {
+        return finishTime;
+    }
+
+    public void setFinishTime(LocalDateTime finishTime) {
+        this.finishTime = finishTime;
+    }
+
+    public Integer getHeight() {
+        return height;
+    }
+
+    public void setHeight(Integer height) {
+        this.height = height;
+    }
+
+    public Integer getWidth() {
+        return width;
+    }
+
+    public void setWidth(Integer width) {
+        this.width = width;
+    }
 }
