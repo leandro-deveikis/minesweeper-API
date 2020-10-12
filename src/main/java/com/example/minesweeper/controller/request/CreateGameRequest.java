@@ -13,6 +13,9 @@ public class CreateGameRequest {
         this.mineQuantity = mineQuantity;
     }
 
+    public CreateGameRequest() {
+    }
+
     public Integer getPlayerId() {
         return playerId;
     }
