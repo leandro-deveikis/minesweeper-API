@@ -1,5 +1,6 @@
 package com.example.minesweeper.controller.validator;
 
+import com.example.minesweeper.controller.request.CreateGameRequest;
 import com.example.minesweeper.controller.request.GameActionRequest;
 import com.example.minesweeper.exception.MinesweeperException;
 import com.example.minesweeper.service.persistence.GameInMemoryPersistenceService;
@@ -46,5 +47,18 @@ public class GameRequestValidator {
             throw new MinesweeperException("Y param is invalid", HttpStatus.BAD_REQUEST);
         if (x < 0 || x > game.getWidth() - 1)
             throw new MinesweeperException("X param is invalid", HttpStatus.BAD_REQUEST);
+    }
+
+    public void validateCreateGameRequest(CreateGameRequest request) {
+        if (request == null)
+            throw new MinesweeperException("Request body is required", HttpStatus.BAD_REQUEST);
+        if (request.getWidth() == null || request.getWidth() < 0)
+            throw new MinesweeperException("Width is required and should be higher than 0", HttpStatus.BAD_REQUEST);
+        if (request.getHeight() == null || request.getHeight() < 0)
+            throw new MinesweeperException("Height is required and should be higher than 0", HttpStatus.BAD_REQUEST);
+        if (request.getMineQuantity() == null || request.getMineQuantity() < 0)
+            throw new MinesweeperException("MineQuantity is required and should be higher than 0", HttpStatus.BAD_REQUEST);
+        if (request.getPlayerId() == null)
+            throw new MinesweeperException("PlayerId is required", HttpStatus.BAD_REQUEST);
     }
 }

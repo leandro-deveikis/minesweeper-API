@@ -5,13 +5,15 @@ import com.example.minesweeper.controller.request.GameActionRequest;
 import com.example.minesweeper.controller.validator.GameRequestValidator;
 import com.example.minesweeper.domain.Game;
 import com.example.minesweeper.service.GameService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/game")
 public class GameController {
-    // private static final Log LOGGER = LogFactory.getLog(GameController.class);
+    private static final Log LOGGER = LogFactory.getLog(GameController.class);
     private GameService gameService;
     private GameRequestValidator requestValidator;
 
@@ -23,15 +25,16 @@ public class GameController {
 
     @GetMapping("/{gameId}")
     @ResponseBody
-    public Game getGame(@PathVariable Integer gameId) {
+    public Game getGameById(@PathVariable Integer gameId) {
+        LOGGER.info("GameController.getGameById called.");
         return gameService.getGameById(gameId);
     }
 
     @PostMapping
     @ResponseBody
     public Game createGame(@RequestBody CreateGameRequest request) {
-        // TODO Validate request
-        // TODO Create exceptions to throw - return error value
+        LOGGER.info("GameController.createGame called.");
+        this.requestValidator.validateCreateGameRequest(request);
         return this.gameService.createGame(request.getPlayerId(), request.getHeight(), request.getWidth(),
                 request.getMineQuantity());
     }
@@ -39,6 +42,7 @@ public class GameController {
     @PostMapping("/{gameId}/click")
     @ResponseBody
     public Game clickSquare(@PathVariable Integer gameId, @RequestBody GameActionRequest actionRequest) {
+        LOGGER.info("GameController.clickSquare called.");
         this.requestValidator.validateGameActionRequest(gameId, actionRequest);
         return this.gameService.clickSquare(gameId, actionRequest.getX(), actionRequest.getY());
     }
@@ -46,6 +50,7 @@ public class GameController {
     @PostMapping("/{gameId}/flag")
     @ResponseBody
     public Game flagSquare(@PathVariable Integer gameId, @RequestBody GameActionRequest actionRequest) {
+        LOGGER.info("GameController.flagSquare called.");
         this.requestValidator.validateGameActionRequest(gameId, actionRequest);
         return this.gameService.flagSquare(gameId, actionRequest.getX(), actionRequest.getY());
     }

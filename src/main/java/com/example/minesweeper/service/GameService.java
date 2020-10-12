@@ -47,7 +47,9 @@ public class GameService {
         game.setStartTime(LocalDateTime.now());
         game.setHeight(height);
         game.setWidth(width);
-        return this.gamePersistenceService.saveGame(game);
+        game = this.gamePersistenceService.saveGame(game);
+        LOGGER.info("Game created with id: " + game.getId());
+        return game;
     }
 
     public Game getGameById(Integer id) {
@@ -69,6 +71,7 @@ public class GameService {
 
         // check if mine      -> end game loose
         if (SquareValue.MINE.equals(square.getValue())) {
+            LOGGER.info("Mine clicked, finishing game.");
             square.setState(SquareState.UNCOVERED);
             this.finishGame(game, GameResult.LOST);
         } else {
@@ -87,8 +90,9 @@ public class GameService {
         return game;
     }
 
-    private void finishGame(Game game, GameResult lost) {
-        game.setResult(lost);
+    private void finishGame(Game game, GameResult gameResult) {
+        LOGGER.info("Finishing game with id " + game.getId() + " with result " + gameResult);
+        game.setResult(gameResult);
         game.setState(GameState.FINISHED);
         game.setFinishTime(LocalDateTime.now());
     }
@@ -100,7 +104,6 @@ public class GameService {
                 .allMatch(square ->
                         SquareState.UNCOVERED.equals(square.getState()) ||
                                 SquareValue.MINE.equals(square.getValue()));
-
         LOGGER.info("Game " + game.getId() + " finished: " + finished);
         return finished;
     }

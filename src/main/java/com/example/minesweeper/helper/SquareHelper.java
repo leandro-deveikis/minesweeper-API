@@ -4,8 +4,12 @@ import com.example.minesweeper.domain.Game;
 import com.example.minesweeper.domain.Square;
 import com.example.minesweeper.domain.SquareState;
 import com.example.minesweeper.domain.SquareValue;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public abstract class SquareHelper {
+    private static final Log LOGGER = LogFactory.getLog(SquareHelper.class);
+
     /**
      * This will calculate the number of mines adjacent to a position.
      * TODO: This method probably can be refactor or improved
@@ -42,6 +46,7 @@ public abstract class SquareHelper {
 
 
     public static void uncoverSquare(int x, int y, Game game) {
+        LOGGER.info("Uncovering square x: " + x + " y:" + y + " for gameId: " + game.getId());
         // this will avoid problems with the array
         if (x < 0 || x >= game.getWidth()) return;
         if (y < 0 || y >= game.getHeight()) return;
@@ -53,6 +58,8 @@ public abstract class SquareHelper {
         square.setState(SquareState.UNCOVERED);
 
         if (square.getNumber() != null && square.getNumber() == 0) {
+            LOGGER.info("Square x: " + x + " y:" + y + " has value 0, uncovering surrounding squares.");
+
             uncoverSquare(x - 1, y - 1, game);
             uncoverSquare(x - 1, y, game);
             uncoverSquare(x - 1, y + 1, game);

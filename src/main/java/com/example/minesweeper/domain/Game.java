@@ -1,5 +1,6 @@
 package com.example.minesweeper.domain;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 /**
@@ -86,5 +87,19 @@ public class Game {
 
     public void setWidth(Integer width) {
         this.width = width;
+    }
+
+    /**
+     * this will be returned in the json response. will represent the
+     * amount of time (in seconds) played by de user
+     */
+    public long getTimeExpended() {
+        LocalDateTime endTime;
+        if (finishTime != null) {
+            endTime = this.finishTime;
+        } else {
+            endTime = LocalDateTime.now();
+        }
+        return Duration.between(this.startTime, endTime).toSeconds();
     }
 }
