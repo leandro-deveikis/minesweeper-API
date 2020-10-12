@@ -39,7 +39,7 @@ class MinesweeperApplicationTests {
         assertNotNull(outputCreate);
         assertNotNull(outputCreate.getId());
 
-        Player outputGet = this.playerController.getPlayer(outputCreate.getId());
+        Player outputGet = this.playerController.getPlayerById(outputCreate.getId());
         assertNotNull(outputGet);
         assertNotNull(outputGet.getId());
         assertEquals(test_name_player, outputGet.getName());
@@ -66,7 +66,7 @@ class MinesweeperApplicationTests {
 
         // Test - get by id
 
-        var outputGetGame = this.gameController.getGame(game.getId());
+        var outputGetGame = this.gameController.getGameById(game.getId());
         assertNotNull(outputGetGame);
         assertNotNull(outputGetGame.getId());
     }
