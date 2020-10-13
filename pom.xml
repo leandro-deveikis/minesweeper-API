@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.leandrodeveikis</groupId>
 	<artifactId>minesweeper-api</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<name>minesweeper-api</name>
 	<description>Minesweeper API challenge solution from Leandro Deveikis.</description>
 

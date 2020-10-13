@@ -11,72 +11,178 @@ Deployed at Heroku:
 
 ## API Definition
 ### INFO
+GET http://minesweeper-api-ld.herokuapp.com/
+
+Example:
 ```shell script
     curl --request GET 'http://minesweeper-api-ld.herokuapp.com/' 
 ```
 
-### Player
+Example response:
+```json
+{
+    "author": "Leandro Deveikis <leandro.deveikis@gmail.com>",
+    "repo": "https://github.com/leandro-deveikis/minesweeper-API",
+    "project_name": "Minesweeper-API",
+    "version": "1.0.0"
+}
+```
 
-#### Player creation
-POST /minesweeper/player/
+### Player
+#### Create new Player
+POST http://minesweeper-api-ld.herokuapp.com/player
 
 Request:
 ```json
 {
-    "name": "user_name"
+    "name" : [player_name]
 }
 ```
 
-Response:
+Example:
+```shell script
+curl --request POST 'http://minesweeper-api-ld.herokuapp.com/player' \
+     --header 'Content-Type: application/json' \
+     --data-raw '{
+    "name": "Player name"
+}'
+```
+
+Example response:
 ```json
 {
-    "id": 1234,
-    "name": "user_name"
+    "id": 1,
+    "name": "Player name"
 }
 ```
 
 ### Game
 
 #### Game creation
-POST /minesweeper/game/
+POST http://minesweeper-api-ld.herokuapp.com/game
 
 Request
 ```json
 {
-    "player_id": 1234,
-    "height": 10,
-    "width": 10,
-    "mine_quantity": 20
+    "player_id": [player_id],
+    "height": [game_height],
+    "width": [game_width],
+    "mine_quantity": [mine_quantity]
 }    
 ```
-Response:
+Example:
+```shell script
+curl --location --request POST 'http://minesweeper-api-ld.herokuapp.com/game' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "playerId": "1",
+    "height": "15",
+    "width": "15",
+    "mineQuantity": "50"
+}'
 ```
-//Complete with response of game state
-```
-#### Game interaction
-##### HIT
-/minesweeper/game/{id_game}/hit
+Example response:
 ```json
 {
-    "x": 5,
-    "y": 6
+    "id": 2,
+    "player": {
+        "id": 3,
+        "name": "Leandro"
+    },
+    "grid": [
+        [
+            // deleted to reduse lenght
+        ]
+    ],
+    "startTime": "2020-10-10T22:12:59.230321",
+    "finishTime": null,
+    "state": "PLAYING",
+    "result": null,
+    "height": 15,
+    "width": 15,
+    "timeExpended": 0
 }
 ```
 
-Response:
+#### Game interaction
+##### Click square
+POST http://minesweeper-api-ld.herokuapp.com/game/{id_game}/click
+Request
+```json
+{
+    "x": [x],
+    "y": [y]
+}
 ```
-//Complete with response of game state
+Example:
+```shell script
+curl --location --request POST 'http://minesweeper-api-ld.herokuapp.com/game/2/click' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "x": 3,
+    "y": 2
+}'
+```
+Example response:
+```json
+{
+    "id": 2,
+    "player": {
+        "id": 3,
+        "name": "Leandro"
+    },
+    "grid": [
+        [
+            // deleted to reduse lenght - grid is updated
+        ]
+    ],
+    "startTime": "2020-10-10T22:12:59.230321",
+    "finishTime": null,
+    "state": "PLAYING",
+    "result": null,
+    "height": 15,
+    "width": 15,
+    "timeExpended": 0
+}
 ```
 ##### FLAG
-/minesweeper/game/{id_game}/flag
+POST http://minesweeper-api-ld.herokuapp.com/game/{id_game}/flag
 ```json
 {
-    "x": 5,
-    "y": 6
+    "x": [x],
+    "y": [y],
+    "flagType": [RED_FLAG,QUESTION_MARK]
 }
 ```
-
-Response:
+Example
+```shell script
+curl --location --request POST 'http://minesweeper-api-ld.herokuapp.com/game/3/flag' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "x": 1,
+    "y": 0,
+    "flagType": "QUESTION_MARK"
+}'
 ```
-//Complete with response of game state
+Response:
+```json
+{
+    "id": 2,
+    "player": {
+        "id": 3,
+        "name": "Leandro"
+    },
+    "grid": [
+        [
+            // deleted to reduse lenght - grid is updated
+        ]
+    ],
+    "startTime": "2020-10-10T22:12:59.230321",
+    "finishTime": null,
+    "state": "PLAYING",
+    "result": null,
+    "height": 15,
+    "width": 15,
+    "timeExpended": 0
+}
 ```
