@@ -63,7 +63,7 @@ public class GameService {
 
         // check if flagged   -> throw exception
         if (SquareState.FLAGGED.equals(square.getState()))
-            throw new MinesweeperException("Invalid operation - Clicking flagged square", HttpStatus.BAD_REQUEST);
+            throw new MinesweeperException("Invalid operation - Clicking flagged or marked square", HttpStatus.BAD_REQUEST);
 
         // check if uncovered -> throw exception
         if (SquareState.UNCOVERED.equals(square.getState()))
@@ -108,7 +108,7 @@ public class GameService {
         return finished;
     }
 
-    public Game flagSquare(Integer gameId, int x, int y) {
+    public Game flagSquare(Integer gameId, int x, int y, FlagType type) {
         // verify can be flagged
         var game = this.getGameById(gameId);
         this.validateGameCanAction(game);
@@ -117,12 +117,16 @@ public class GameService {
         if (SquareState.UNCOVERED.equals(square.getState()))
             throw new MinesweeperException("Uncovered square can not be flagged.", HttpStatus.BAD_REQUEST);
 
-        // reverse status
-        if (SquareState.COVERED.equals(square.getState()))
+        if (SquareState.COVERED.equals(square.getState())) {
             square.setState(SquareState.FLAGGED);
-        else if (SquareState.FLAGGED.equals(square.getState()))
-            square.setState(SquareState.COVERED);
-
+            square.setFlagType(type);
+        } else if (SquareState.FLAGGED.equals(square.getState())) {
+            if (type.equals(square.getFlagType())) {
+                // reverse status
+                square.setState(SquareState.COVERED);
+                square.setFlagType(null);
+            } else square.setFlagType(type);
+        }
         // save and return
         game = this.gameRepository.save(game);
         LogHelper.logGrid(game.getGrid());

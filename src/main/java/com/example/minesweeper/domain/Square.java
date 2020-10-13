@@ -8,6 +8,8 @@ public class Square implements Serializable {
     private SquareValue value;
     // this is only set if VALUE is number.
     private Integer number;
+    // this is only set if STATE is FLAGGED
+    private FlagType flagType;
 
     public Square(SquareState state, SquareValue value) {
         this.state = state;
@@ -45,5 +47,13 @@ public class Square implements Serializable {
 
     public void setNumber(Integer number) {
         this.number = number;
+    }
+
+    public FlagType getFlagType() {
+        return flagType;
+    }
+
+    public void setFlagType(FlagType flagType) {
+        this.flagType = flagType;
     }
 }

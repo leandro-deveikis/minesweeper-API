@@ -1,7 +1,8 @@
 package com.example.minesweeper.controller;
 
+import com.example.minesweeper.controller.request.ClickActionRequest;
 import com.example.minesweeper.controller.request.CreateGameRequest;
-import com.example.minesweeper.controller.request.GameActionRequest;
+import com.example.minesweeper.controller.request.FlagActionRequest;
 import com.example.minesweeper.controller.validator.GameRequestValidator;
 import com.example.minesweeper.domain.Game;
 import com.example.minesweeper.service.GameService;
@@ -41,17 +42,18 @@ public class GameController {
 
     @PostMapping("/{gameId}/click")
     @ResponseBody
-    public Game clickSquare(@PathVariable Integer gameId, @RequestBody GameActionRequest actionRequest) {
+    public Game clickSquare(@PathVariable Integer gameId, @RequestBody ClickActionRequest actionRequest) {
         LOGGER.info("GameController.clickSquare called.");
-        this.requestValidator.validateGameActionRequest(gameId, actionRequest);
+        this.requestValidator.validateClickActionRequest(gameId, actionRequest);
         return this.gameService.clickSquare(gameId, actionRequest.getX(), actionRequest.getY());
     }
 
     @PostMapping("/{gameId}/flag")
     @ResponseBody
-    public Game flagSquare(@PathVariable Integer gameId, @RequestBody GameActionRequest actionRequest) {
+    public Game flagSquare(@PathVariable Integer gameId, @RequestBody FlagActionRequest actionRequest) {
         LOGGER.info("GameController.flagSquare called.");
-        this.requestValidator.validateGameActionRequest(gameId, actionRequest);
-        return this.gameService.flagSquare(gameId, actionRequest.getX(), actionRequest.getY());
+        this.requestValidator.validateFlagActionRequest(gameId, actionRequest);
+        return this.gameService.flagSquare(gameId, actionRequest.getX(), actionRequest.getY(),
+                actionRequest.getFlagType());
     }
 }

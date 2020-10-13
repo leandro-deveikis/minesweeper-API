@@ -12,8 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
@@ -67,12 +66,18 @@ class GameServiceTest {
     void flagSquare_ok() {
         when(gameRepository.findById(any())).thenReturn(Optional.of(gameMock));
 
-        var game = this.gameService.flagSquare(2, 0, 0);
+        var game = this.gameService.flagSquare(2, 0, 0, FlagType.QUESTION_MARK);
         assertEquals(SquareState.FLAGGED, game.getGrid()[0][0].getState());
+        assertEquals(FlagType.QUESTION_MARK, game.getGrid()[0][0].getFlagType());
+
+        var game2 = this.gameService.flagSquare(2, 0, 0, FlagType.RED_FLAG);
+        assertEquals(SquareState.FLAGGED, game2.getGrid()[0][0].getState());
+        assertEquals(FlagType.RED_FLAG, game2.getGrid()[0][0].getFlagType());
 
         // now reverse it
-        var game2 = this.gameService.flagSquare(2, 0, 0);
-        assertEquals(SquareState.COVERED, game2.getGrid()[0][0].getState());
+        var game3 = this.gameService.flagSquare(2, 0, 0, FlagType.RED_FLAG);
+        assertEquals(SquareState.COVERED, game3.getGrid()[0][0].getState());
+        assertNull(game3.getGrid()[0][0].getFlagType());
     }
 
 
@@ -97,8 +102,9 @@ class GameServiceTest {
             C(2) C(2) C(1) C(0)
          */
 
-        game = this.gameService.flagSquare(5, 1, 0);
+        game = this.gameService.flagSquare(5, 1, 0, FlagType.RED_FLAG);
         assertEquals(SquareState.FLAGGED, game.getGrid()[0][1].getState());
+        assertEquals(FlagType.RED_FLAG, game.getGrid()[0][1].getFlagType());
 
          /*  Game state
             C(2) F(2) C(1) C(0)
@@ -106,8 +112,9 @@ class GameServiceTest {
             C(2) C(2) C(1) C(0)
          */
 
-        game = this.gameService.flagSquare(5, 1, 0);
+        game = this.gameService.flagSquare(5, 1, 0, FlagType.RED_FLAG);
         assertEquals(SquareState.COVERED, game.getGrid()[0][1].getState());
+        assertNull(game.getGrid()[0][1].getFlagType());
 
         /*  Game state
             C(2) C(2) C(1) C(0)

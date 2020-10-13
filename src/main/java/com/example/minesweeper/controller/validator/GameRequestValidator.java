@@ -1,7 +1,8 @@
 package com.example.minesweeper.controller.validator;
 
+import com.example.minesweeper.controller.request.ClickActionRequest;
 import com.example.minesweeper.controller.request.CreateGameRequest;
-import com.example.minesweeper.controller.request.GameActionRequest;
+import com.example.minesweeper.controller.request.FlagActionRequest;
 import com.example.minesweeper.exception.MinesweeperException;
 import com.example.minesweeper.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +23,13 @@ public class GameRequestValidator {
     }
 
     /**
-     * Used for both click and flag requests.
+     * Validates click requests.
      * Validates:
      * - None of the param is missing.
      * - game is found by the ID.
      * - X and Y are within the width and length of the grid
      */
-    public void validateGameActionRequest(Integer gameId, GameActionRequest actionRequest) {
+    public void validateClickActionRequest(Integer gameId, ClickActionRequest actionRequest) {
         if (StringUtils.isEmpty(gameId))
             throw new MinesweeperException("GameId is required", HttpStatus.BAD_REQUEST);
 
@@ -41,6 +42,37 @@ public class GameRequestValidator {
             throw new MinesweeperException("X param is required", HttpStatus.BAD_REQUEST);
         if (y == null)
             throw new MinesweeperException("Y param is required", HttpStatus.BAD_REQUEST);
+
+        var game = gameService.getGameById(gameId);
+        if (y < 0 || y > game.getHeight() - 1)
+            throw new MinesweeperException("Y param is invalid", HttpStatus.BAD_REQUEST);
+        if (x < 0 || x > game.getWidth() - 1)
+            throw new MinesweeperException("X param is invalid", HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * Validates flag requests.
+     * Validates:
+     * - None of the param is missing.
+     * - game is found by the ID.
+     * - X and Y are within the width and length of the grid
+     */
+    public void validateFlagActionRequest(Integer gameId, FlagActionRequest actionRequest) {
+        if (StringUtils.isEmpty(gameId))
+            throw new MinesweeperException("GameId is required", HttpStatus.BAD_REQUEST);
+
+        if (actionRequest == null)
+            throw new MinesweeperException("X and Y positions are required", HttpStatus.BAD_REQUEST);
+
+        Integer x = actionRequest.getX();
+        Integer y = actionRequest.getY();
+        if (x == null)
+            throw new MinesweeperException("X param is required", HttpStatus.BAD_REQUEST);
+        if (y == null)
+            throw new MinesweeperException("Y param is required", HttpStatus.BAD_REQUEST);
+
+        if (actionRequest.getFlagType() == null)
+            throw new MinesweeperException("flagType param is required", HttpStatus.BAD_REQUEST);
 
         var game = gameService.getGameById(gameId);
         if (y < 0 || y > game.getHeight() - 1)
