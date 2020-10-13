@@ -17,7 +17,6 @@ Example:
 ```shell script
     curl --request GET 'http://minesweeper-api-ld.herokuapp.com/' 
 ```
-
 Example response:
 ```json
 {
@@ -27,18 +26,15 @@ Example response:
     "version": "1.0.0"
 }
 ```
-
 ### Player
 #### Create new Player
 POST http://minesweeper-api-ld.herokuapp.com/player
-
 Request:
-```json
+```
 {
     "name" : [player_name]
 }
 ```
-
 Example:
 ```shell script
 curl --request POST 'http://minesweeper-api-ld.herokuapp.com/player' \
@@ -47,7 +43,6 @@ curl --request POST 'http://minesweeper-api-ld.herokuapp.com/player' \
     "name": "Player name"
 }'
 ```
-
 Example response:
 ```json
 {
@@ -55,14 +50,11 @@ Example response:
     "name": "Player name"
 }
 ```
-
 ### Game
-
 #### Game creation
 POST http://minesweeper-api-ld.herokuapp.com/game
-
 Request
-```json
+```
 {
     "player_id": [player_id],
     "height": [game_height],
@@ -82,7 +74,7 @@ curl --location --request POST 'http://minesweeper-api-ld.herokuapp.com/game' \
 }'
 ```
 Example response:
-```json
+```
 {
     "id": 2,
     "player": {
@@ -103,12 +95,11 @@ Example response:
     "timeExpended": 0
 }
 ```
-
 #### Game interaction
 ##### Click square
 POST http://minesweeper-api-ld.herokuapp.com/game/{id_game}/click
 Request
-```json
+```
 {
     "x": [x],
     "y": [y]
@@ -124,7 +115,7 @@ curl --location --request POST 'http://minesweeper-api-ld.herokuapp.com/game/2/c
 }'
 ```
 Example response:
-```json
+```
 {
     "id": 2,
     "player": {
@@ -147,7 +138,7 @@ Example response:
 ```
 ##### FLAG
 POST http://minesweeper-api-ld.herokuapp.com/game/{id_game}/flag
-```json
+```
 {
     "x": [x],
     "y": [y],
@@ -165,7 +156,7 @@ curl --location --request POST 'http://minesweeper-api-ld.herokuapp.com/game/3/f
 }'
 ```
 Response:
-```json
+```
 {
     "id": 2,
     "player": {
