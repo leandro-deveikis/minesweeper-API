@@ -4,8 +4,7 @@ import com.example.minesweeper.domain.*;
 import com.example.minesweeper.exception.MinesweeperException;
 import com.example.minesweeper.helper.LogHelper;
 import com.example.minesweeper.helper.SquareHelper;
-import com.example.minesweeper.service.persistence.GameInMemoryPersistenceService;
-import com.example.minesweeper.service.persistence.PlayerInMemoryPersistenceService;
+import com.example.minesweeper.persistence.GameRepository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,14 +23,14 @@ public class GameService {
     private static final Log LOGGER = LogFactory.getLog(GameService.class);
 
     private GridService gridService;
-    private GameInMemoryPersistenceService gamePersistenceService;
-    private PlayerInMemoryPersistenceService playerPersistenceService;
+    private PlayerService playerService;
+    private GameRepository gameRepository;
 
     @Autowired
-    public GameService(GridService gridService, GameInMemoryPersistenceService gamePersistenceService, PlayerInMemoryPersistenceService playerInMemoryPersistenceService) {
+    public GameService(GridService gridService, PlayerService playerService, GameRepository gameRepository) {
         this.gridService = gridService;
-        this.gamePersistenceService = gamePersistenceService;
-        this.playerPersistenceService = playerInMemoryPersistenceService;
+        this.playerService = playerService;
+        this.gameRepository = gameRepository;
     }
 
     /**
@@ -41,19 +40,20 @@ public class GameService {
      */
     public Game createGame(Integer playerId, Integer height, Integer width, Integer mineQuantity) {
         var game = new Game();
-        game.setPlayer(this.playerPersistenceService.getPlayerById(playerId));
+        game.setPlayer(this.playerService.getPlayerById(playerId));
         game.setGrid(this.gridService.generateGrid(height, width, mineQuantity));
         game.setState(GameState.PLAYING);
         game.setStartTime(LocalDateTime.now());
         game.setHeight(height);
         game.setWidth(width);
-        game = this.gamePersistenceService.saveGame(game);
+        game = this.gameRepository.save(game);
         LOGGER.info("Game created with id: " + game.getId());
         return game;
     }
 
     public Game getGameById(Integer id) {
-        return this.gamePersistenceService.getGameById(id);
+        return this.gameRepository.findById(id)
+                .orElseThrow(() -> new MinesweeperException("Game not found: " + id, HttpStatus.NOT_FOUND));
     }
 
     public Game clickSquare(Integer gameId, int x, int y) {
@@ -85,7 +85,7 @@ public class GameService {
             }
         }
 
-        game = this.gamePersistenceService.saveGame(game);
+        game = this.gameRepository.save(game);
         LogHelper.logGrid(game.getGrid());
         return game;
     }
@@ -124,7 +124,7 @@ public class GameService {
             square.setState(SquareState.COVERED);
 
         // save and return
-        game = this.gamePersistenceService.saveGame(game);
+        game = this.gameRepository.save(game);
         LogHelper.logGrid(game.getGrid());
         return game;
     }

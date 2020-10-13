@@ -3,7 +3,7 @@ package com.example.minesweeper.controller.validator;
 import com.example.minesweeper.controller.request.CreateGameRequest;
 import com.example.minesweeper.controller.request.GameActionRequest;
 import com.example.minesweeper.exception.MinesweeperException;
-import com.example.minesweeper.service.persistence.GameInMemoryPersistenceService;
+import com.example.minesweeper.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -14,11 +14,11 @@ import org.springframework.util.StringUtils;
  */
 @Component
 public class GameRequestValidator {
-    private GameInMemoryPersistenceService gamePersistenceService;
+    private GameService gameService;
 
     @Autowired
-    public GameRequestValidator(GameInMemoryPersistenceService gamePersistenceService) {
-        this.gamePersistenceService = gamePersistenceService;
+    public GameRequestValidator(GameService gameService) {
+        this.gameService = gameService;
     }
 
     /**
@@ -42,7 +42,7 @@ public class GameRequestValidator {
         if (y == null)
             throw new MinesweeperException("Y param is required", HttpStatus.BAD_REQUEST);
 
-        var game = gamePersistenceService.getGameById(gameId);
+        var game = gameService.getGameById(gameId);
         if (y < 0 || y > game.getHeight() - 1)
             throw new MinesweeperException("Y param is invalid", HttpStatus.BAD_REQUEST);
         if (x < 0 || x > game.getWidth() - 1)

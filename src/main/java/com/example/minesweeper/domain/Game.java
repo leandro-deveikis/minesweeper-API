@@ -1,20 +1,48 @@
 package com.example.minesweeper.domain;
 
+import com.example.minesweeper.persistence.converter.SquareArrayToJsonConverter;
+
+import javax.persistence.*;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
 /**
  * Representation of a Game being played or finished.
  */
+@Entity
+@Table(name = "game")
 public class Game {
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @ManyToOne
+    @JoinColumn(name = "player_id")
     private Player player;
+
+    @Column(name = "grid", columnDefinition = "json")
+    @Convert(converter = SquareArrayToJsonConverter.class)
     private Square[][] grid;
+
+    @Column(name = "start_time")
     private LocalDateTime startTime;
+
+    @Column(name = "finish_time")
     private LocalDateTime finishTime;
+
+    @Column(name = "state")
+    @Enumerated(EnumType.STRING)
     private GameState state;
+
+    @Column(name = "result")
+    @Enumerated(EnumType.STRING)
     private GameResult result;
+
+    @Column(name = "height")
     private Integer height;
+
+    @Column(name = "width")
     private Integer width;
 
     public void setId(Integer id) {

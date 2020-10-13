@@ -2,14 +2,15 @@ package com.example.minesweeper.service;
 
 import com.example.minesweeper.GridMockGenerator;
 import com.example.minesweeper.domain.*;
-import com.example.minesweeper.service.persistence.GameInMemoryPersistenceService;
-import com.example.minesweeper.service.persistence.PlayerInMemoryPersistenceService;
+import com.example.minesweeper.persistence.GameRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.AdditionalAnswers;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -27,9 +28,9 @@ class GameServiceTest {
     @Mock
     private GridService gridService;
     @Mock
-    private GameInMemoryPersistenceService gamePersistenceService;
+    private GameRepository gameRepository;
     @Mock
-    private PlayerInMemoryPersistenceService playerPersistenceService;
+    private PlayerService playerService;
     private Square[][] gridMock;
     private Game gameMock;
 
@@ -40,10 +41,10 @@ class GameServiceTest {
         // at this time we only use this param
         gameMock.setGrid(gridMock);
 
-        this.gameService = new GameService(this.gridService, this.gamePersistenceService, this.playerPersistenceService);
+        this.gameService = new GameService(this.gridService, this.playerService, this.gameRepository);
 
         // save method returns the same
-        when(gamePersistenceService.saveGame(any())).then(AdditionalAnswers.returnsFirstArg());
+        when(gameRepository.save(any())).then(AdditionalAnswers.returnsFirstArg());
     }
 
     @Test
@@ -59,12 +60,12 @@ class GameServiceTest {
         Player mockPlayer = new Player();
         mockPlayer.setName("Mock player Name");
         mockPlayer.setId(5);
-        when(playerPersistenceService.getPlayerById(eq(5))).thenReturn(mockPlayer);
+        when(playerService.getPlayerById(eq(5))).thenReturn(mockPlayer);
     }
 
     @Test
     void flagSquare_ok() {
-        when(gamePersistenceService.getGameById(any())).thenReturn(gameMock);
+        when(gameRepository.findById(any())).thenReturn(Optional.of(gameMock));
 
         var game = this.gameService.flagSquare(2, 0, 0);
         assertEquals(SquareState.FLAGGED, game.getGrid()[0][0].getState());
@@ -88,7 +89,7 @@ class GameServiceTest {
         var game = this.gameService.createGame(5, 3, 4, 2);
         assertNotNull(game);
 
-        when(gamePersistenceService.getGameById(any())).thenReturn(game);
+        when(gameRepository.findById(any())).thenReturn(Optional.of(game));
 
         /*  Game state
             C(2) C(2) C(1) C(0)
@@ -153,7 +154,7 @@ class GameServiceTest {
         var game = this.gameService.createGame(5, 3, 4, 2);
         assertNotNull(game);
 
-        when(gamePersistenceService.getGameById(any())).thenReturn(game);
+        when(gameRepository.findById(any())).thenReturn(Optional.of(game));
 
         game = this.gameService.clickSquare(5, 1, 1);
         assertEquals(GameState.FINISHED, game.getState());

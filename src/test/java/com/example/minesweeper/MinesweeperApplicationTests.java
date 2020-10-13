@@ -8,6 +8,9 @@ import com.example.minesweeper.domain.Player;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -17,6 +20,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * This can be really improved to get more coverage and details
  */
 @SpringBootTest
+@ContextConfiguration(
+        classes = {MinesweeperApplication.class, TestConfig.class},
+        loader = AnnotationConfigContextLoader.class
+)
+@TestPropertySource(locations = "classpath:application.properties")
 class MinesweeperApplicationTests {
 
     @Autowired

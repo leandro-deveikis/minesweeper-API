@@ -1,6 +1,9 @@
 package com.example.minesweeper.domain;
 
-public class Square {
+import java.io.Serializable;
+
+public class Square implements Serializable {
+
     private SquareState state;
     private SquareValue value;
     // this is only set if VALUE is number.
@@ -15,6 +18,9 @@ public class Square {
         this.state = state;
         this.value = value;
         this.number = number;
+    }
+
+    public Square() {
     }
 
     public SquareValue getValue() {
