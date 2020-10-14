@@ -19,7 +19,7 @@ public class InfoController {
     public Map getInfo() {
         LOGGER.info("InfoController.info called.");
         return Map.of(
-                "project_name", "Minesweeper-API",
+                "projectName", "Minesweeper-API",
                 "version", this.projectVersion,
                 "author", "Leandro Deveikis <leandro.deveikis@gmail.com>",
                 "repo", "https://github.com/leandro-deveikis/minesweeper-API"
