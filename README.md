@@ -35,7 +35,8 @@ Deployed at Heroku:
 
 ### Items that can be improved
 * Logs, metrics, monitory mechanisms.
-* Exception and error handling can be improved. 
+* Exception and error handling can be improved.
+* Dates formatting. 
 * Testing: Improve coverage.
 * Concurrency: lock mechanism should be implemented to avoid concurrency problems. Could be implemented at Service level, locking by game.
 * Production instances: At this moment there is only 1 instance for the app and 1 instance for the database. To ensure high-availability, this should be increase according to the expected throughput.
